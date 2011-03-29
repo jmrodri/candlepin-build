@@ -19,6 +19,6 @@ brew download-build --latestfrom candlepin-1-rhel6-candidate candlepin
 rm -f candlepin*src.rpm
 createrepo --checksum sha -d .
 
-#rsync -avz --delete --no-p --no-g /tmp/candlepin/$1/RHEL/ dept.rhndev.redhat.com:/var/www/dept/yum/candlepin/$1/RHEL/
-mkdir -p /tmp/dept/yum/candlepin/$1/RHEL/
-rsync -avz --delete --no-p --no-g /tmp/candlepin/$1/RHEL/ /tmp/dept/yum/candlepin/$1/RHEL/
+rsync -avz --delete --no-p --no-g /tmp/candlepin/$1/RHEL/ dept.rhndev.redhat.com:/var/www/dept/yum/candlepin/$1/RHEL/
+#mkdir -p /tmp/dept/yum/candlepin/$1/RHEL/
+#rsync -avz --delete --no-p --no-g /tmp/candlepin/$1/RHEL/ /tmp/dept/yum/candlepin/$1/RHEL/

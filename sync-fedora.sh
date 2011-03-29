@@ -16,6 +16,6 @@ cp /tmp/cp-fedora-14-x86_64/* /tmp/candlepin/$1/Fedora/14/
 cd /tmp/candlepin/$1/Fedora/14/
 createrepo -d .
 
-#rsync -avz --delete --no-p --no-g /tmp/candlepin/$1/Fedora/ dept.rhndev.redhat.com:/var/www/dept/yum/candlepin/$1/Fedora/
-mkdir -p /tmp/dept/yum/candlepin/$1/Fedora/
-rsync -avz --delete --no-p --no-g /tmp/candlepin/$1/Fedora/ /tmp/dept/yum/candlepin/$1/Fedora/
+rsync -avz --delete --no-p --no-g /tmp/candlepin/$1/Fedora/ dept.rhndev.redhat.com:/var/www/dept/yum/candlepin/$1/Fedora/
+#mkdir -p /tmp/dept/yum/candlepin/$1/Fedora/
+#rsync -avz --delete --no-p --no-g /tmp/candlepin/$1/Fedora/ /tmp/dept/yum/candlepin/$1/Fedora/
