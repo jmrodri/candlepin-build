@@ -9,4 +9,4 @@ mkdir -p /tmp/candlepin
 cp /tmp/candlepin-build/noarch/candlepin-*$1*.rpm /tmp/candlepin/
 cd /tmp/candlepin/
 createrepo --checksum sha -d .
-rsync -avz --delete --no-p --no-g /tmp/candlepin/ dept.rhndev.redhat.com:/var/www/dept/yum/candlepin/
+rsync -avz --delete --no-p --no-g /tmp/candlepin/ dept.rhndev.redhat.com:/var/www/dept/yum/candlepin/0.2/
