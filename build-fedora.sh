@@ -1,12 +1,3 @@
-#!/bin/sh
-#rm -rf /tmp/cp-fedora-13-i386/
-#mock -r fedora-13-i386 --init
-#mock -r fedora-13-i386 --install /tmp/candlepin-build/noarch/candlepin-deps-0.0.13-1.fc13.noarch.rpm
-#mock -r fedora-13-i386 --installdeps /tmp/candlepin-build/candlepin-0.3.1-1.fc13.src.rpm
-#mock -r fedora-13-i386 --copyin /tmp/candlepin-build/candlepin-0.3.1-1.fc13.src.rpm  /tmp
-#mock -r fedora-13-i386 --chroot "cd; rpmbuild --rebuild /tmp/candlepin-0.3.1-1.fc13.src.rpm"
-#mock -r fedora-13-i386 --copyout /builddir/build/RPMS/ /tmp/cp-fedora-13-i386/
-
 BASEDIR=/tmp/candlepin-build
 DEPSDIR=/home/devel/jesusr/dev/candlepin-deps
 CPDIR=/home/devel/jesusr/dev/candlepin
