@@ -4,6 +4,13 @@ CPDIR=/home/devel/jesusr/dev/candlepin
 DEPSVERSION=`rpm -q --qf '%{version}-%{release}\n' --specfile $DEPSDIR/candlepin-deps.spec | head -1`
 VERSION=`rpm -q --qf '%{version}-%{release}\n' --specfile $CPDIR/proxy/candlepin.spec | head -1`
 
+pushd $DEPSDIR
+tito build --rpm
+popd
+pushd $CPDIR/proxy
+tito build --srpm
+popd
+
 for i in fedora-13-x86_64 fedora-14-x86_64
 do
     rm -rf /tmp/cp-$i/
