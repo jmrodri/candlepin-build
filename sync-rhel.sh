@@ -1,7 +1,7 @@
 #!/bin/sh
 
 if [ "$1" == "" ]; then
-    echo "Supply a Candlepin version."
+    echo "Supply a Candlepin version i.e. 0.3, 0.4."
     exit 1;
 fi
 
