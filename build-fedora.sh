@@ -11,7 +11,7 @@ pushd $CPDIR/proxy
 tito build --srpm
 popd
 
-for i in fedora-13-x86_64 fedora-14-x86_64
+for i in fedora-13-x86_64 fedora-14-x86_64 fedora-15-x86_64
 do
     rm -rf /tmp/cp-$i/
     mock -r $i --init
