@@ -1,6 +1,24 @@
-BASEDIR=/tmp/candlepin-build
-DEPSDIR=/home/devel/jesusr/dev/candlepin-deps
-CPDIR=/home/devel/jesusr/dev/candlepin
+# Read in user defined variables
+if [ -f $HOME/.candlepinrc ] ; then
+    source $HOME/.candlepinrc
+fi
+
+# verify our configs are setup correctly
+if [ -z $BASEDIR ] ; then
+    echo "BASEDIR not set, please tell me where to build"
+    exit 1
+fi
+
+if [ -z $DEPSDIR ] ; then
+    echo "DEPSDIR not set, where is candlepin-deps src tree?"
+    exit 1
+fi
+
+if [ -z $CPDIR ] ; then
+    echo "CPDIR not set, where is candlepin src tree?"
+    exit 1
+fi
+
 DEPSVERSION=`rpm -q --qf '%{version}-%{release}\n' --specfile $DEPSDIR/candlepin-deps.spec | head -1`
 VERSION=`rpm -q --qf '%{version}-%{release}\n' --specfile $CPDIR/proxy/candlepin.spec | head -1`
 
