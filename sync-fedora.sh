@@ -1,7 +1,7 @@
 #!/bin/sh
 
 if [ "$1" == "" ]; then
-    echo "Supply a Candlepin version."
+    echo "Supply a Candlepin version i.e. 0.3, 0.4."
     exit 1;
 fi
 
@@ -14,6 +14,11 @@ createrepo -d .
 mkdir -p /tmp/candlepin/$1/Fedora/14/
 cp /tmp/cp-fedora-14-x86_64/* /tmp/candlepin/$1/Fedora/14/
 cd /tmp/candlepin/$1/Fedora/14/
+createrepo -d .
+
+mkdir -p /tmp/candlepin/$1/Fedora/15/
+cp /tmp/cp-fedora-14-x86_64/* /tmp/candlepin/$1/Fedora/15/
+cd /tmp/candlepin/$1/Fedora/15/
 createrepo -d .
 
 rsync -avz --delete --no-p --no-g /tmp/candlepin/$1/Fedora/ dept.rhndev.redhat.com:/var/www/dept/yum/candlepin/$1/Fedora/
