@@ -5,22 +5,20 @@ if [ "$1" == "" ]; then
     exit 1;
 fi
 
-rm -rf /tmp/candlepin/$1/Fedora/
-mkdir -p /tmp/candlepin/$1/Fedora/13/
-cp /tmp/cp-fedora-13-x86_64/* /tmp/candlepin/$1/Fedora/13/
-cd /tmp/candlepin/$1/Fedora/13/
-createrepo -d .
+function preprepo {
+    cpver=$1
+    fedoraver=$2
+    rm -rf /tmp/candlepin/$cpver/Fedora/
+    mkdir -p /tmp/candlepin/$cpver/Fedora/$fedoraver/
+    cp /tmp/cp-fedora-$fedoraver-x86_64/* /tmp/candlepin/$cpver/Fedora/$fedoraver/
+    cd /tmp/candlepin/$cpver/Fedora/$fedoraver/
+    createrepo -d .
+}
 
-mkdir -p /tmp/candlepin/$1/Fedora/14/
-cp /tmp/cp-fedora-14-x86_64/* /tmp/candlepin/$1/Fedora/14/
-cd /tmp/candlepin/$1/Fedora/14/
-createrepo -d .
+preprepo $1 13
 
-mkdir -p /tmp/candlepin/$1/Fedora/15/
-cp /tmp/cp-fedora-15-x86_64/* /tmp/candlepin/$1/Fedora/15/
-cd /tmp/candlepin/$1/Fedora/15/
-createrepo -d .
+preprepo $1 14
+
+preprepo $1 15
 
 rsync -avz --delete --no-p --no-g /tmp/candlepin/$1/Fedora/ dept.rhndev.redhat.com:/var/www/dept/yum/candlepin/$1/Fedora/
-#mkdir -p /tmp/dept/yum/candlepin/$1/Fedora/
-#rsync -avz --delete --no-p --no-g /tmp/candlepin/$1/Fedora/ /tmp/dept/yum/candlepin/$1/Fedora/
