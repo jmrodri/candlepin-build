@@ -17,7 +17,7 @@ cd /tmp/candlepin/$1/Fedora/14/
 createrepo -d .
 
 mkdir -p /tmp/candlepin/$1/Fedora/15/
-cp /tmp/cp-fedora-14-x86_64/* /tmp/candlepin/$1/Fedora/15/
+cp /tmp/cp-fedora-15-x86_64/* /tmp/candlepin/$1/Fedora/15/
 cd /tmp/candlepin/$1/Fedora/15/
 createrepo -d .
 
