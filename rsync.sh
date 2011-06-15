@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-fasLogin=
+fasLogin=jmrodri
 repoLocalDir=/tmp/candlepin/0.4/
 repoName=candlepin
 repoOwner=candlepin
@@ -16,7 +16,7 @@ do
     do
         echo -e "\033[34m\t* $dir3:\033[0m"
         cd $dir3
-        createrepo ./
+        #createrepo ./
         rsync "${rsyncParam[@]}" ./* $fasLogin@fedorapeople.org:/srv/repos/$repoOwner/$repoName/$dir2/$dir3
         cd ..
     done
