@@ -1,5 +1,11 @@
 #!/bin/sh
 
+#
+# This script will take the output of build-fedora.sh, and the tito
+# built epel rpms, and create a repo tree that can be rsync'd to
+# repos.fedorapeople.org
+#
+
 if [ "$1" == "" ]; then
     echo "Supply a Candlepin version i.e. 0.3, 0.4."
     exit 1;
