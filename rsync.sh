@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 fasLogin=
-repoLocalDir=
+repoLocalDir=/tmp/candlepin/0.4/
 repoName=candlepin
 repoOwner=candlepin
 declare -a branch=(fedora-14 fedora-15 epel-5 epel-6)
