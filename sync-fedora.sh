@@ -8,12 +8,13 @@ fi
 function preprepo {
     cpver=$1
     fedoraver=$2
-    rm -rf /tmp/candlepin/$cpver/Fedora/
     mkdir -p /tmp/candlepin/$cpver/Fedora/$fedoraver/
     cp /tmp/cp-fedora-$fedoraver-x86_64/* /tmp/candlepin/$cpver/Fedora/$fedoraver/
     cd /tmp/candlepin/$cpver/Fedora/$fedoraver/
     createrepo -d .
 }
+
+rm -rf /tmp/candlepin/$cpver/Fedora/
 
 preprepo $1 13
 
