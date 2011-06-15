@@ -14,7 +14,7 @@ function preprepo {
     createrepo -d .
 }
 
-rm -rf /tmp/candlepin/$cpver/Fedora/
+rm -rf /tmp/candlepin/$1/Fedora/
 
 preprepo $1 13
 
