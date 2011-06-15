@@ -38,4 +38,5 @@ do
     mock -r $i --copyin $BASEDIR/candlepin-$VERSION.src.rpm  /tmp
     mock -r $i --chroot "cd; rpmbuild --rebuild /tmp/candlepin-$VERSION.src.rpm"
     mock -r $i --copyout /builddir/build/RPMS/ /tmp/cp-$i/
+    mock -r $i --copyout /tmp/candlepin-$VERSION.src.rpm /tmp/cp-$i/
 done
