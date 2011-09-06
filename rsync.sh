@@ -3,7 +3,7 @@ fasLogin=jmrodri
 repoLocalDir=/tmp/candlepin/0.4/
 repoName=candlepin
 repoOwner=candlepin
-declare -a branch=(fedora-14 fedora-15 epel-5 epel-6)
+declare -a branch=(fedora-14 fedora-15 epel-5Server epel-6Server)
 declare -a rpmdir=(i386 x86_64 SRPMS)
 declare -a rsyncParam=(-avtz --delete)
 
