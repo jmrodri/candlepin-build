@@ -29,9 +29,7 @@ pushd $CPDIR/proxy
 tito build --srpm
 popd
 
-mock -r fedora-14-x86_64 --rebuild /tmp/candlepin-build/candlepin-deps-0.0.18-1.fc13.src.rpm 
-
-for i in fedora-13-x86_64 fedora-14-x86_64 fedora-15-x86_64
+for i in fedora-14-x86_64 fedora-15-x86_64
 do
     rm -rf /tmp/cp-$i/
     rm -rf $BASEDIR/$i/
