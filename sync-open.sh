@@ -27,6 +27,7 @@ function prep_epel_repo {
     mkdir -p /tmp/candlepin/$cpver/epel-${epelver}Server/{i386,SRPMS,x86_64}
     cd /tmp/candlepin/$cpver/epel-${epelver}Server
     brew download-build --latestfrom candlepin-1-rhel$epelver-candidate candlepin
+    brew download-build --latestfrom candlepin-1-rhel$epelver-candidate candlepin-deps
     mv candlepin*src.rpm SRPMS/
     cp candlepin*.rpm i386/
     cp candlepin*.rpm x86_64/

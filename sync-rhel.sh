@@ -11,6 +11,7 @@ function preprepo {
     mkdir -p /tmp/candlepin/$cpver/RHEL/$rhelver/
     cd /tmp/candlepin/$cpver/RHEL/$rhelver
     brew download-build --latestfrom candlepin-1-rhel$rhelver-candidate candlepin
+    brew download-build --latestfrom candlepin-1-rhel$rhelver-candidate candlepin-deps
     rm -f candlepin*src.rpm
     createrepo --checksum sha -d .
 }
