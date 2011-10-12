@@ -41,9 +41,9 @@ function prep_fedora_repo {
     cpver=$1
     fedoraver=$2
     mkdir -p /tmp/candlepin/$cpver/fedora-$fedoraver/{i386,SRPMS,x86_64}
-    mv /tmp/cp-fedora-$fedoraver-x86_64/*src.rpm /tmp/candlepin/$cpver/fedora-$fedoraver/SRPMS/
-    cp /tmp/cp-fedora-$fedoraver-x86_64/* /tmp/candlepin/$cpver/fedora-$fedoraver/i386/
-    cp /tmp/cp-fedora-$fedoraver-x86_64/* /tmp/candlepin/$cpver/fedora-$fedoraver/x86_64/
+    mv /tmp/repo-fedora-$fedoraver-x86_64/candlepin/*src.rpm /tmp/candlepin/$cpver/fedora-$fedoraver/SRPMS/
+    cp /tmp/repo-fedora-$fedoraver-x86_64/candlepin/* /tmp/candlepin/$cpver/fedora-$fedoraver/i386/
+    cp /tmp/repo-fedora-$fedoraver-x86_64/candlepin/* /tmp/candlepin/$cpver/fedora-$fedoraver/x86_64/
     cd /tmp/candlepin/$cpver/fedora-$fedoraver/
     create_repo fedora i386
     create_repo fedora x86_64
