@@ -1,3 +1,71 @@
+#!/bin/sh
+
+build() {
+    PACKAGE=$1
+    DEPSDIR=$2
+    PKGDIR=$3
+    DEPSVERSION=`rpm -q --qf '%{version}-%{release}\n' --specfile $DEPSDIR/$PACKAGE-deps.spec | head -1`
+    VERSION=`rpm -q --qf '%{version}-%{release}\n' --specfile $PKGDIR/$PACKAGE.spec | head -1`
+
+    pushd $DEPSDIR
+    tito build --srpm
+    popd
+    pushd $PKGDIR
+    tito build --srpm
+    popd
+
+    for i in fedora-14-x86_64 fedora-15-x86_64
+    do
+        rm -rf /tmp/repo-$i/$PACKAGE/
+        rm -rf $BASEDIR/$i/
+        mock -r $i --resultdir=$BASEDIR/$i/ --rebuild $BASEDIR/$PACKAGE-deps-$DEPSVERSION.src.rpm
+        mock -r $i --init
+        mock -r $i --install $BASEDIR/$i/$PACKAGE-deps-*.noarch.rpm
+        mock -r $i --installdeps $BASEDIR/$PACKAGE-$VERSION.src.rpm
+        mock -r $i --copyin $BASEDIR/$PACKAGE-$VERSION.src.rpm  /tmp
+        mock -r $i --chroot "cd; rpmbuild --rebuild /tmp/$PACKAGE-$VERSION.src.rpm"
+        mock -r $i --copyout /builddir/build/RPMS/ /tmp/repo-$i/$PACKAGE
+        mock -r $i --copyout /tmp/$PACKAGE-$VERSION.src.rpm /tmp/repo-$i/$PACKAGE/
+        cp $BASEDIR/$i/$PACKAGE-deps*.noarch.rpm /tmp/repo-$i/$PACKAGE/
+    done
+}
+
+buildCandlepin() {
+    if [ -z $CPDEPSDIR ] ; then
+        echo "CPDEPSDIR not set, where is candlepin-deps src tree?"
+        exit 1
+    fi
+
+    if [ -z $CPDIR ] ; then
+        echo "CPDIR not set, where is candlepin src tree?"
+        exit 1
+    fi
+    build 'candlepin' $CPDEPSDIR $CPDIR'/proxy'
+}
+
+buildThumbslug() {
+    if [ -z $TSDEPSDIR ] ; then
+        echo "TSDEPSDIR not set, where is thumbslug-deps src tree?"
+        exit 1
+    fi
+
+    if [ -z $TSDIR ] ; then
+        echo "TSDIR not set, where is thumbslug src tree?"
+        exit 1
+    fi
+    build 'thumbslug' $TSDEPSDIR $TSDIR
+}
+
+printBasedir() {
+    echo $BASEDIR
+}
+
+########################################################################
+#
+# MAIN
+#
+########################################################################
+
 # Read in user defined variables
 if [ -f $HOME/.candlepinrc ] ; then
     source $HOME/.candlepinrc
@@ -9,37 +77,12 @@ if [ -z $BASEDIR ] ; then
     exit 1
 fi
 
-if [ -z $DEPSDIR ] ; then
-    echo "DEPSDIR not set, where is candlepin-deps src tree?"
+if [ "$1" == "candlepin" ] ; then
+    buildCandlepin
+elif [ "$1" == "thumbslug" ] ; then
+    buildThumbslug
+else
+    echo "Please supply a package name: candlepin or thumbslug."
     exit 1
 fi
-
-if [ -z $CPDIR ] ; then
-    echo "CPDIR not set, where is candlepin src tree?"
-    exit 1
-fi
-
-DEPSVERSION=`rpm -q --qf '%{version}-%{release}\n' --specfile $DEPSDIR/candlepin-deps.spec | head -1`
-VERSION=`rpm -q --qf '%{version}-%{release}\n' --specfile $CPDIR/proxy/candlepin.spec | head -1`
-
-pushd $DEPSDIR
-tito build --srpm
-popd
-pushd $CPDIR/proxy
-tito build --srpm
-popd
-
-for i in fedora-14-x86_64 fedora-15-x86_64
-do
-    rm -rf /tmp/cp-$i/
-    rm -rf $BASEDIR/$i/
-    mock -r $i --resultdir=$BASEDIR/$i/ --rebuild $BASEDIR/candlepin-deps-$DEPSVERSION.src.rpm
-    mock -r $i --init
-    mock -r $i --install $BASEDIR/$i/candlepin-deps-*.noarch.rpm
-    mock -r $i --installdeps $BASEDIR/candlepin-$VERSION.src.rpm
-    mock -r $i --copyin $BASEDIR/candlepin-$VERSION.src.rpm  /tmp
-    mock -r $i --chroot "cd; rpmbuild --rebuild /tmp/candlepin-$VERSION.src.rpm"
-    mock -r $i --copyout /builddir/build/RPMS/ /tmp/cp-$i/
-    mock -r $i --copyout /tmp/candlepin-$VERSION.src.rpm /tmp/cp-$i/
-    cp $BASEDIR/$i/candlepin-deps*.noarch.rpm /tmp/cp-$i/
-done
+printBasedir
