@@ -18,15 +18,14 @@ build() {
     do
         rm -rf /tmp/repo-$i/$PACKAGE/
         rm -rf $BASEDIR/$i/
+        mkdir -p /tmp/repo-$i/$PACKAGE/
         mock -r $i --resultdir=$BASEDIR/$i/ --rebuild $BASEDIR/$PACKAGE-deps-$DEPSVERSION.src.rpm
         mock -r $i --init
         mock -r $i --install $BASEDIR/$i/$PACKAGE-deps-*.noarch.rpm
-        mock -r $i --installdeps $BASEDIR/$PACKAGE-$VERSION.src.rpm
-        mock -r $i --copyin $BASEDIR/$PACKAGE-$VERSION.src.rpm  /tmp
-        mock -r $i --chroot "cd; rpmbuild --rebuild /tmp/$PACKAGE-$VERSION.src.rpm"
-        mock -r $i --copyout /builddir/build/RPMS/ /tmp/repo-$i/$PACKAGE
-        mock -r $i --copyout /tmp/$PACKAGE-$VERSION.src.rpm /tmp/repo-$i/$PACKAGE/
-        cp $BASEDIR/$i/$PACKAGE-deps*.noarch.rpm /tmp/repo-$i/$PACKAGE/
+        mock -r $i --resultdir=$BASEDIR/$i/ --rebuild --no-clean $BASEDIR/$PACKAGE-$VERSION.src.rpm
+        # can't use $VERSION when copying rpms since the dist changes
+        cp $BASEDIR/$i/$PACKAGE-*.src.rpm /tmp/repo-$i/$PACKAGE/
+        cp $BASEDIR/$i/$PACKAGE*.noarch.rpm /tmp/repo-$i/$PACKAGE/
     done
 }
 
