@@ -84,4 +84,3 @@ else
     echo "Please supply a package name: candlepin or thumbslug."
     exit 1
 fi
-printBasedir
