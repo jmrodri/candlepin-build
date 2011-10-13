@@ -6,10 +6,11 @@
 # repos.fedorapeople.org
 #
 
-if [ "$1" == "" ]; then
-    echo "Supply a Candlepin version i.e. 0.3, 0.4."
-    exit 1;
+# Read in user defined variables
+if [ -f $HOME/.candlepinrc ] ; then
+    source $HOME/.candlepinrc
 fi
+
 
 function create_repo {
     pushd $2
@@ -22,15 +23,18 @@ function create_repo {
 }
 
 function prep_epel_repo {
-    cpver=$1
+    ver=$1
     epelver=$2
-    mkdir -p /tmp/candlepin/$cpver/epel-${epelver}Server/{i386,SRPMS,x86_64}
-    cd /tmp/candlepin/$cpver/epel-${epelver}Server
+    package=$3
+    mkdir -p /tmp/repo/$package/$ver/epel-${epelver}Server/{i386,SRPMS,x86_64}
+    cd /tmp/repo/$package/$ver/epel-${epelver}Server
     brew download-build --latestfrom candlepin-1-rhel$epelver-candidate candlepin
     brew download-build --latestfrom candlepin-1-rhel$epelver-candidate candlepin-deps
-    mv candlepin*src.rpm SRPMS/
+    cp candlepin*src.rpm SRPMS/
     cp candlepin*.rpm i386/
     cp candlepin*.rpm x86_64/
+    rm -f i386/candlepin*src.rpm
+    rm -f x86_64/candlepin*src.rpm
     rm -f candlepin*.rpm
     create_repo epel i386
     create_repo epel x86_64
@@ -38,13 +42,16 @@ function prep_epel_repo {
 }
 
 function prep_fedora_repo {
-    cpver=$1
+    ver=$1
     fedoraver=$2
-    mkdir -p /tmp/candlepin/$cpver/fedora-$fedoraver/{i386,SRPMS,x86_64}
-    mv /tmp/repo-fedora-$fedoraver-x86_64/candlepin/*src.rpm /tmp/candlepin/$cpver/fedora-$fedoraver/SRPMS/
-    cp /tmp/repo-fedora-$fedoraver-x86_64/candlepin/* /tmp/candlepin/$cpver/fedora-$fedoraver/i386/
-    cp /tmp/repo-fedora-$fedoraver-x86_64/candlepin/* /tmp/candlepin/$cpver/fedora-$fedoraver/x86_64/
-    cd /tmp/candlepin/$cpver/fedora-$fedoraver/
+    package=$3
+    mkdir -p /tmp/repo/$package/$ver/fedora-$fedoraver/{i386,SRPMS,x86_64}
+    cp /tmp/repo-fedora-$fedoraver-x86_64/$package/*src.rpm /tmp/repo/$package/$ver/fedora-$fedoraver/SRPMS/
+    cp /tmp/repo-fedora-$fedoraver-x86_64/$package/* /tmp/repo/$package/$ver/fedora-$fedoraver/i386/
+    cp /tmp/repo-fedora-$fedoraver-x86_64/$package/* /tmp/repo/$package/$ver/fedora-$fedoraver/x86_64/
+    rm -f /tmp/repo/$package/$ver/fedora-$fedoraver/i386/*src.rpm
+    rm -f /tmp/repo/$package/$ver/fedora-$fedoraver/x86_64/*src.rpm
+    cd /tmp/repo/$package/$ver/fedora-$fedoraver/
     create_repo fedora i386
     create_repo fedora x86_64
     create_repo fedora SRPMS
@@ -52,10 +59,12 @@ function prep_fedora_repo {
 
 rm -rf /tmp/candlepin/$1/
 
-prep_epel_repo $1 5
-prep_epel_repo $1 6
-prep_fedora_repo $1 13
-prep_fedora_repo $1 14
-prep_fedora_repo $1 15
+CPVERSION=`rpm -q --qf '%{version}\n' --specfile $CPDIR/proxy/candlepin.spec | head -1`
+TSVERSION=`rpm -q --qf '%{version}\n' --specfile $TSDIR/thumbslug.spec | head -1`
 
-#rsync -avz --delete --no-p --no-g /tmp/candlepin/$1/RHEL/ dept.rhndev.redhat.com:/var/www/dept/yum/candlepin/$1/RHEL/
+prep_epel_repo $CPVERSION 5 candlepin
+prep_epel_repo $CPVERSION 6 candlepin
+prep_fedora_repo $CPVERSION 14 candlepin
+prep_fedora_repo $CPVERSION 15 candlepin
+prep_fedora_repo $TSVERSION 14 thumbslug
+prep_fedora_repo $TSVERSION 15 thumbslug
