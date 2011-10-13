@@ -16,8 +16,6 @@ function preprepo {
 
 rm -rf /tmp/candlepin/$1/Fedora/
 
-preprepo $1 13
-
 preprepo $1 14
 
 preprepo $1 15
