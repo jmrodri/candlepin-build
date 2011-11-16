@@ -8,18 +8,18 @@ fi
 function preprepo {
     cpver=$1
     rhelver=$2
-    mkdir -p /tmp/candlepin/$cpver/RHEL/$rhelver/
-    cd /tmp/candlepin/$cpver/RHEL/$rhelver
-    brew download-build --latestfrom candlepin-1-rhel$rhelver-candidate candlepin
-    brew download-build --latestfrom candlepin-1-rhel$rhelver-candidate candlepin-deps
+    mkdir -p /tmp/repo/internal/candlepin/$cpver/RHEL/$rhelver/
+    cd /tmp/repo/internal/candlepin/$cpver/RHEL/$rhelver
+    brew download-build --latestfrom se-rhel-6-candidate candlepin
+    brew download-build --latestfrom se-rhel-6-candidate candlepin-deps
     rm -f candlepin*src.rpm
     createrepo --checksum sha -d .
 }
 
-rm -rf /tmp/candlepin/$1/RHEL/
+rm -rf /tmp/repo/internal/candlepin/$1/RHEL/
 
 preprepo $1 5
 
 preprepo $1 6
 
-rsync -avz --delete --no-p --no-g /tmp/candlepin/$1/RHEL/ dept.rhndev.redhat.com:/var/www/dept/yum/candlepin/$1/RHEL/
+rsync -avz --delete --no-p --no-g /tmp/repo/internal/candlepin/$1/RHEL/ dept.rhndev.redhat.com:/var/www/dept/yum/candlepin/$1/RHEL/

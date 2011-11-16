@@ -28,8 +28,8 @@ function prep_epel_repo {
     package=$3
     mkdir -p /tmp/repo/$package/$ver/epel-${epelver}Server/{i386,SRPMS,x86_64}
     cd /tmp/repo/$package/$ver/epel-${epelver}Server
-    brew download-build --latestfrom candlepin-1-rhel$epelver-candidate candlepin
-    brew download-build --latestfrom candlepin-1-rhel$epelver-candidate candlepin-deps
+    brew download-build --latestfrom se-rhel-6-candidate candlepin
+    brew download-build --latestfrom se-rhel-6-candidate candlepin-deps
     cp candlepin*src.rpm SRPMS/
     cp candlepin*.rpm i386/
     cp candlepin*.rpm x86_64/
@@ -57,7 +57,8 @@ function prep_fedora_repo {
     create_repo fedora SRPMS
 }
 
-rm -rf /tmp/candlepin/$1/
+rm -rf /tmp/repo/candlepin/$1/
+rm -rf /tmp/repo/thumbslug/$1/
 
 CPVERSION=`rpm -q --qf '%{version}\n' --specfile $CPDIR/proxy/candlepin.spec | head -1`
 TSVERSION=`rpm -q --qf '%{version}\n' --specfile $TSDIR/thumbslug.spec | head -1`
@@ -66,5 +67,6 @@ prep_epel_repo $CPVERSION 5 candlepin
 prep_epel_repo $CPVERSION 6 candlepin
 prep_fedora_repo $CPVERSION 14 candlepin
 prep_fedora_repo $CPVERSION 15 candlepin
+#prep_epel_repo $TSVERSION 6 thumbslug
 prep_fedora_repo $TSVERSION 14 thumbslug
 prep_fedora_repo $TSVERSION 15 thumbslug
