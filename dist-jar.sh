@@ -70,7 +70,7 @@ distCopy() {
     echo "Copying $(echo $JARS | wc -w) packages onto $_DEST..."
     echo "*** $RCPCMD -> $REMOTE_USER$_DEST"
     for p in $JARS ; do echo -e "\t$p" ; done
-    #$RCPCMD $JARS $REMOTE_USER$_DEST 2>&1
+        $RCPCMD $JARS $REMOTE_USER$_DEST 2>&1
 }
 
 cleanup() {

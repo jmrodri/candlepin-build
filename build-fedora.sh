@@ -14,7 +14,8 @@ build() {
     tito build --srpm
     popd
 
-    for i in fedora-14-x86_64 fedora-15-x86_64
+    #for i in fedora-14-x86_64 fedora-15-x86_64 fedora-16-x86_64
+    for i in fedora-16-x86_64
     do
         rm -rf /tmp/repo-$i/$PACKAGE/
         rm -rf $BASEDIR/$i/
